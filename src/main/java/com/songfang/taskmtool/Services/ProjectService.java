@@ -1,7 +1,9 @@
 package com.songfang.taskmtool.Services;
 
+import com.songfang.taskmtool.Domain.Backlog;
 import com.songfang.taskmtool.Domain.Project;
 import com.songfang.taskmtool.Exception.ProjectIdException;
+import com.songfang.taskmtool.Repository.BacklogRepository;
 import com.songfang.taskmtool.Repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +14,28 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private BacklogRepository backlogRepository;
+
     public Project saveOrUpdate(Project project){
         try {
+            if(project.getId()==null){
+                Backlog backlog = new Backlog();
+                backlog.setProjectIdentifier(project.getprojectIdentifier());
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+
+            }
+
+            if(project.getId()!=null){
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getprojectIdentifier()));
+            }
+            //Actually we didn't persist backlog at this time
             return projectRepository.save(project);
         }catch(Exception e){
             throw new ProjectIdException("Project ID"+project.getprojectIdentifier().toLowerCase());
         }
+
     }
 
     public Project findProjectByIdentifier(String projectId){
@@ -38,6 +56,7 @@ public class ProjectService {
             throw new ProjectIdException("Project does not exist!");
         }
         projectRepository.delete(project);
+
     }
 
 
