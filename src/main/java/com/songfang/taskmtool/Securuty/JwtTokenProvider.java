@@ -4,6 +4,7 @@ import com.songfang.taskmtool.Domain.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
 import static com.songfang.taskmtool.Securuty.SecurityConstraints.EXPIRATION_TIME;
 import static com.songfang.taskmtool.Securuty.SecurityConstraints.SECRET;
 
+@Component
 public class JwtTokenProvider {
     public String generateToken(Authentication authentication){
         User user = (User) authentication.getPrincipal();
@@ -37,4 +39,3 @@ public class JwtTokenProvider {
     }
 
     }
-}
