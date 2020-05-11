@@ -24,7 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
     }
 
     @Transactional
-    public User loadById(Long id){
+    public User loadUserById(Long id){
         User user = userRepository.getById(id);
         if(user==null){
             new UsernameNotFoundException("User not found!");

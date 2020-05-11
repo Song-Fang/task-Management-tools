@@ -127,6 +127,6 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
